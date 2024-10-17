@@ -1,0 +1,22 @@
+/* // Revisar lo que hay en la nueva posición
+      if (matrix[newRow][newCol] === 2) {
+        // Si hay un zombi
+        console.log(
+          "¡Encontraste un zombi! Tus monedas se reducen a la mitad."
+        );
+        coins = Math.floor(coins / 2);
+      } else if (matrix[newRow][newCol] === 3) {
+        // Si hay una recompensa
+        console.log("¡Encontraste una recompensa! Tus monedas se duplican.");
+        coins *= 2;
+      } else {
+        console.log("Movimiento seguro.");
+      }
+
+      console.log(`Nueva posición: [${newRow}, ${newCol}]`);
+      console.log(`Monedas: ${coins}`);
+
+      // Verificar si el jugador ha llegado a la casilla final
+      if (newRow === dimension - 1 && newCol === dimension - 1) {
+        console.log("¡Felicidades, llegaste al final del juego!");
+      }*/
