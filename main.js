@@ -8,7 +8,22 @@
 */
 
 // VARIABLES
-let dimension = 3; // Size of the matrix (for example, 4x4) parseInt(prompt("Introduce la dimensión del tablero (un número entero): ")); // Pedir al usuario la dimensión del tablero
+
+let dimension; 
+
+do {
+  let input = prompt("Introduce la dimensión del tablero (un número entero entre 4 y 14):");
+  
+  // Si el usuario cancela, salimos del ciclo
+  if (input === null) {
+    console.log("El usuario canceló.");
+    break;
+  }
+
+  dimension = parseInt(input);
+
+  // Si la entrada no es válida, se repetirá el ciclo
+} while (isNaN(dimension) || dimension < 4 || dimension > 14);
 let matrix; //
 
 let playerPosition = [0, 0]; // Posición inicial del jugador
@@ -35,6 +50,7 @@ createRandomRewards(matrix);
 showTable(matrix);
 
 // functions
+
 function createSquareMatrix(dim) {
   // Initialize the empty matrix
   let matrix = [];
@@ -296,6 +312,3 @@ while (
   move(promptWherToMove); // Ejecutar movimiento
   showTable(matrix); // Mostrar estado actual del tablero
 }
-
-
-log(move("East"))
