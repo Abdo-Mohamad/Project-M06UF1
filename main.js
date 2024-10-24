@@ -15,9 +15,9 @@ let playerPosition = [0, 0]; // Posición inicial del jugador
 let visited = new Set(); // Lugares visitados (usamos Set para evitar repeticiones)
 visited.add("0,0"); // Marcamos la posición inicial como visitada
 let promptWherToMove; // preguntar por donde mover se
-let pocitionValida = [];
-
-//let coins = 10; // Monedas iniciales
+let pocitionValida = []; //
+let movimentos = 0; // Número de movimientos realizados
+let coins = 0; // Monedas iniciales
 
 // Definimos las direcciones de movimiento
 const directions = {
@@ -109,6 +109,7 @@ function showTable(matrix) {
     displayStr += matrix[i].join(" ") + "\n"; // Join the elements of each row with a space and add a newline
   }
   console.log(displayStr);
+  return matrix;
 }
 
 /* // Mover al jugador en una dirección (North, South, East, West)
@@ -169,6 +170,7 @@ function move(direction) {
   // Verificar si la dirección proporcionada es válida
   if (directions[direction] === undefined) {
     console.log("Dirección inválida. Usa 'North', 'South', 'East' o 'West'.");
+    alert("Dirección inválida. Usa 'North', 'South', 'East' o 'West'.");
   } else {
     // Calcular la nueva posición en base a la dirección dada
     let [rowChange, colChange] = directions[direction];
@@ -187,18 +189,45 @@ function move(direction) {
         // Actualizar la posición del jugador
         playerPosition = [newRow, newCol];
         visited.add(`${newRow},${newCol}`);
-        matrix[currentRow][currentCol] = 1; // Marcamos la nueva posición en la matriz
-        matrix[newRow][newCol] = 1; // Marcamos la nueva posición en la matriz
+
         console.log(`Te has movido a la posición [${newRow}, ${newCol}]`);
         alert(`Te has movido a la posición [${newRow}, ${newCol}]`);
 
+        if (matrix[newRow][newCol] === 2) {
+          // Si hay un zombi
+          console.log(
+            "¡Encontraste un zombi! Tus monedas se reducen a la mitad."
+          );
+          movimentos = 0;
+          coins = Math.floor(coins / 2);
+          console.log(coins);
+        } else if (matrix[newRow][newCol] === 3) {
+          // Si hay una recompensa
+          console.log("¡Encontraste una recompensa! Tus monedas se duplican.");
+          movimentos++;
+          coins += movimentos;
+          coins *= 5;
+          movimentos = 0;
+          console.log(coins);
+        } else {
+          // Si es un espacio vacío
+          console.log("Movimiento seguro.");
+          movimentos++;
+          coins += movimentos;
+          console.log(coins, " coins");
+          console.log(movimentos, " movimientos");
+        }
+        matrix[currentRow][currentCol] = 1; // Marcamos la nueva posición en la matriz
+        matrix[newRow][newCol] = 1; // Marcamos la nueva posición en la matriz
         // Verificar si el jugador ha ganado
         if (
           playerPosition[0] === dimension - 1 &&
           playerPosition[1] === dimension - 1
         ) {
           console.log("¡Has ganado!");
+          console.log("¡Felicidades, llegaste al final del juego!");
           alert("¡Has ganado!");
+          alert(coins, "coins");
         }
       } else {
         console.log("¡Ya visitaste esta casilla!");
@@ -259,8 +288,14 @@ while (
   let promptWherToMove = prompt(
     `¿pudes mover a estes diraciones? ${pocitionValida}`
   );
+  if (promptWherToMove === null) {
+    break;
+  }
   pocitionValida = [];
 
   move(promptWherToMove); // Ejecutar movimiento
   showTable(matrix); // Mostrar estado actual del tablero
 }
+
+
+log(move("East"))
