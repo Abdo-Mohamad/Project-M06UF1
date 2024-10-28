@@ -36,11 +36,12 @@ let coins = 0; // Monedas iniciales
 
 // Definimos las direcciones de movimiento
 const directions = {
-  North: [-1, 0], // Mover hacia arriba
-  South: [1, 0], // Mover hacia abajo
-  East: [0, 1], // Mover hacia la derecha
-  West: [0, -1], // Mover hacia la izquierda
+  north: [-1, 0], // Mover hacia arriba
+  south: [1, 0], // Mover hacia abajo
+  east: [0, 1], // Mover hacia la derecha
+  west: [0, -1], // Mover hacia la izquierda
 };
+console.log(directions);
 
 // coding
 matrix = createSquareMatrix(dimension);
@@ -128,57 +129,6 @@ function showTable(matrix) {
   return matrix;
 }
 
-/* // Mover al jugador en una dirección (North, South, East, West)
-function move(direction) {
-  // Posición actual del jugador
-  let [currentRow, currentCol] = playerPosition;
-  let movimientoPosible = false;
-
-  // Verificar si la dirección proporcionada es válida
-  if (directions[direction] === undefined) {
-    console.log("Dirección inválida. Usa 'North', 'South', 'East' o 'West'.");
-  } else {
-    // Calcular la nueva posición en base a la dirección dada
-    let [rowChange, colChange] = directions[direction];
-    let newRow = currentRow + rowChange;
-    let newCol = currentCol + colChange;
-
-    // Verificar si la nueva posición está dentro de los límites
-    if (
-      newRow >= 0 &&
-      newRow < dimension &&
-      newCol >= 0 &&
-      newCol < dimension
-    ) {
-      // Verificar si ya se visitó esa casilla
-      if (!visited.has(`${newRow},${newCol}`)) {
-        // Actualizar la posición del jugador
-        playerPosition = [newRow, newCol];
-        visited.add(`${newRow},${newCol}`);
-        matrix[currentRow][currentCol] = 1; // Marcamos la nueva posición en la matriz
-        matrix[newRow][newCol] = 1; // Marcamos la nueva posición en la matriz
-        console.log(`Te has movido a la posición [${newRow}, ${newCol}]`); // Se ha movido a la una posición nueva
-        alert(`Te has movido a la posición [${newRow}, ${newCol}]`);
-        //console.log(playerPosition[0], playerPosition[1]); //  Se ha movido a la una posición nueva o la posicion actual
-
-        if (
-          playerPosition[0] === dimension - 1 &&
-          playerPosition[1] === dimension - 1
-        ) {
-          console.log("has ganado");
-          alert("has ganado");
-        }
-      } else {
-        console.log("¡Ya visitaste esta casilla!");
-        alert("¡Ya visitaste esta casilla!");
-      }
-    } else {
-      console.log("No puedes moverte fuera del límite.");
-    }
-  }
- 
-}
- */
 function move(direction) {
   // Posición actual del jugador
   let [currentRow, currentCol] = playerPosition;
@@ -309,6 +259,6 @@ while (
   }
   pocitionValida = [];
 
-  move(promptWherToMove); // Ejecutar movimiento
+  move(promptWherToMove.toLowerCase()); // Ejecutar movimiento
   showTable(matrix); // Mostrar estado actual del tablero
 }
