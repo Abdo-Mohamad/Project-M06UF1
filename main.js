@@ -27,7 +27,7 @@ let validPositions = []; // Array for storing valid move directions
 let moves = 0; // Number of moves made
 let coins = 0; // Initial coin count
 let zombieAround;
-let rewardsAround = "You don't have reward around";
+let rewardsAround;
 
 // Define movement directions
 const directions = {
@@ -161,9 +161,9 @@ function move(direction) {
           console.log("You found a reward! Your coins are doubled.");
           alert("You found a reward! Your coins are doubled.");
           moves++;
+          moves = 0;
           coins += moves;
           coins *= 5;
-          moves = 0;
           console.log(coins);
           alert(`You have ${coins}€ coins`);
         } else {
@@ -175,6 +175,7 @@ function move(direction) {
           console.log(moves, " moves");
           alert(`You have ${coins}€ coins`);
         }
+        alert(`the moves you make ${moves}`);
         matrix[currentRow][currentCol] = 1; // Mark the current position in the matrix
         matrix[newRow][newCol] = 1; // Mark the new position in the matrix
         // Check if the player has won
@@ -220,13 +221,17 @@ function possibleMoves() {
     ) {
       validPositions.push(dir);
       possibleMove = true;
-      matrix[newRow][newCol] === 2
-        ? (zombieAround = "You have zombies around")
-        : (zombieAround = "You don't have zombies around"); //  Check if there are zombies around
+      console.log(matrix[newRow][newCol] === 2);
 
-      matrix[newRow][newCol] === 3
-        ? (rewardsAround = "You have a reward around")
-        : (rewardsAround = "You don't have a reward around"); // chack if thay hava rewaed  arond
+      zombieAround =
+        matrix[newRow][newCol] === 2
+          ? "You have zombies around"
+          : "You don't have zombies around"; // Check if there are zombies around
+
+      rewardsAround =
+        matrix[newRow][newCol] === 3
+          ? "You have a reward around"
+          : "You don't have a reward around"; // Check if there is a reward around
     }
   }
 
