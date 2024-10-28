@@ -26,6 +26,8 @@ let promptWhereToMove; // Variable to store the player's input for movement dire
 let validPositions = []; // Array for storing valid move directions
 let moves = 0; // Number of moves made
 let coins = 0; // Initial coin count
+let zombieAround;
+let rewardsAround = "You don't have reward around";
 
 // Define movement directions
 const directions = {
@@ -149,17 +151,21 @@ function move(direction) {
         if (matrix[newRow][newCol] === 2) {
           // If there is a zombie
           console.log("You found a zombie! Your coins are halved.");
+          alert("You found a zombie! Your coins are halved.");
           moves = 0;
           coins = Math.floor(coins / 2);
           console.log(coins);
+          alert(`You have ${coins}€ coins`);
         } else if (matrix[newRow][newCol] === 3) {
           // If there is a reward
           console.log("You found a reward! Your coins are doubled.");
+          alert("You found a reward! Your coins are doubled.");
           moves++;
           coins += moves;
           coins *= 5;
           moves = 0;
           console.log(coins);
+          alert(`You have ${coins}€ coins`);
         } else {
           // If it's an empty space
           console.log("Safe move.");
@@ -167,6 +173,7 @@ function move(direction) {
           coins += moves;
           console.log(coins, " coins");
           console.log(moves, " moves");
+          alert(`You have ${coins}€ coins`);
         }
         matrix[currentRow][currentCol] = 1; // Mark the current position in the matrix
         matrix[newRow][newCol] = 1; // Mark the new position in the matrix
@@ -178,7 +185,7 @@ function move(direction) {
           console.log("You've won!");
           console.log("Congratulations, you reached the end of the game!");
           alert("You've won!");
-          alert(coins, "coins");
+          alert(`The coins you won ${coins}€`);
         }
       } else {
         console.log("You've already visited this cell!");
@@ -213,6 +220,13 @@ function possibleMoves() {
     ) {
       validPositions.push(dir);
       possibleMove = true;
+      matrix[newRow][newCol] === 2
+        ? (zombieAround = "You have zombies around")
+        : (zombieAround = "You don't have zombies around"); //  Check if there are zombies around
+
+      matrix[newRow][newCol] === 3
+        ? (rewardsAround = "You have a reward around")
+        : (rewardsAround = "You don't have a reward around"); // chack if thay hava rewaed  arond
     }
   }
 
@@ -233,9 +247,11 @@ while (
   if (!possibleMoves()) {
     break; // If no more possible moves, exit the loop
   }
+  /* console.log( directions[validPositions[0]] , "hola" , matrix[0][1]);
+/* if (); */
 
   let promptWhereToMove = prompt(
-    `You can move to these directions: ${validPositions}`
+    `You can move to these directions: ${validPositions}\n ${zombieAround} \n ${rewardsAround} `
   );
   if (promptWhereToMove === null) {
     break;
