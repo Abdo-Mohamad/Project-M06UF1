@@ -28,6 +28,8 @@ let moves = 0; // Number of moves made
 let coins = 0; // Initial coin count
 let zombieAround;
 let rewardsAround;
+let haveZombi = 0;
+let haveReward = 0;
 
 // Define movement directions
 const directions = {
@@ -221,19 +223,32 @@ function possibleMoves() {
     ) {
       validPositions.push(dir);
       possibleMove = true;
-      console.log(matrix[newRow][newCol] === 2);
+      console.log(dir);
 
-      zombieAround =
-        matrix[newRow][newCol] === 2
-          ? "You have zombies around"
-          : "You don't have zombies around"; // Check if there are zombies around
+      console.log(matrix[newRow][newCol] == 2 ? "zombi" : "empty");
+      if (matrix[newRow][newCol] === 2) {
+        haveZombi++;
 
-      rewardsAround =
-        matrix[newRow][newCol] === 3
-          ? "You have a reward around"
-          : "You don't have a reward around"; // Check if there is a reward around
+        console.log(haveZombi, "this is zombi  counter");
+      }
+      if (matrix[newRow][newCol] === 3) {
+        haveReward++;
+      }
     }
+    console.log(haveZombi);
+
+    zombieAround =
+      haveZombi > 0
+        ? "You have zombies around"
+        : "You don't have zombies around"; // Check if there are zombies around
+
+    rewardsAround =
+      haveReward > 0
+        ? "You have a reward around"
+        : "You don't have a reward around"; // Check if there is a reward around
   }
+  haveZombi = 0; // Rest  the zombi counter
+  haveReward = 0; //  Reset counters
 
   // If no possible moves found
   if (!possibleMove) {
