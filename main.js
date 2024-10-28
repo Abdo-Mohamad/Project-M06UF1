@@ -1,56 +1,48 @@
-/* 
-    Zombie RPG:
-    In Zombie RPG, you explore an X x X board full of zombies and rewards.
-    You start at [0, 0] and collect coins with each move. If you find a zombie, 
-    your coins are halved; if you find a reward, they multiply. Move only North,
-    South, East, or West and avoid already visited squares. The game ends if you 
-    run out of moves or reach [X-1, X-1]. Survive!
-*/
-
 // VARIABLES
 
-let dimension; 
+let dimension;
 
 do {
-  let input = prompt("Introduce la dimensión del tablero (un número entero entre 4 y 14):");
-  
-  // Si el usuario cancela, salimos del ciclo
+  let input = prompt(
+    "Enter the board dimension (an integer between 4 and 14):"
+  );
+
+  // If the user cancels, exit the loop
   if (input === null) {
-    console.log("El usuario canceló.");
+    console.log("The user canceled.");
     break;
   }
 
   dimension = parseInt(input);
 
-  // Si la entrada no es válida, se repetirá el ciclo
+  // If the input is invalid, the loop will repeat
 } while (isNaN(dimension) || dimension < 4 || dimension > 14);
-let matrix; //
+let matrix;
 
-let playerPosition = [0, 0]; // Posición inicial del jugador
-let visited = new Set(); // Lugares visitados (usamos Set para evitar repeticiones)
-visited.add("0,0"); // Marcamos la posición inicial como visitada
-let promptWherToMove; // preguntar por donde mover se
-let pocitionValida = []; //
-let movimentos = 0; // Número de movimientos realizados
-let coins = 0; // Monedas iniciales
+let playerPosition = [0, 0]; // Player's starting position
+let visited = new Set(); // Visited locations (using Set to avoid duplicates)
+visited.add("0,0"); // Mark the initial position as visited
+let promptWhereToMove; // Variable to store the player's input for movement direction
+let validPositions = []; // Array for storing valid move directions
+let moves = 0; // Number of moves made
+let coins = 0; // Initial coin count
 
-// Definimos las direcciones de movimiento
+// Define movement directions
 const directions = {
-  north: [-1, 0], // Mover hacia arriba
-  south: [1, 0], // Mover hacia abajo
-  east: [0, 1], // Mover hacia la derecha
-  west: [0, -1], // Mover hacia la izquierda
+  north: [-1, 0], // Move up
+  south: [1, 0], // Move down
+  east: [0, 1], // Move right
+  west: [0, -1], // Move left
 };
 console.log(directions);
 
-// coding
+// Coding
 matrix = createSquareMatrix(dimension);
 createRandomZombie(matrix);
 createRandomRewards(matrix);
-//move(directions);
 showTable(matrix);
 
-// functions
+// Functions
 
 function createSquareMatrix(dim) {
   // Initialize the empty matrix
@@ -73,12 +65,10 @@ function createSquareMatrix(dim) {
 }
 
 function createRandomZombie(matrix) {
-  //console.log(matrix, "this is the matrix");
-
   let randomRow = Math.floor(Math.random() * matrix.length); // Generate a random row
   let randomCol = Math.floor(Math.random() * matrix[0].length); // Generate a random column
 
-  let zombieCounter = 0; //  Initialize the counter for zombies
+  let zombieCounter = 0; // Initialize the counter for zombies
 
   while (zombieCounter < dimension) {
     while (
@@ -92,12 +82,11 @@ function createRandomZombie(matrix) {
     zombieCounter++;
     matrix[randomRow][randomCol] = 2; // Assign a zombie
   }
-  //return matrix; // If you want to return the updated matrix
 }
 
 function createRandomRewards(matrix) {
   let rewardsNumber = Math.round(matrix.length / 4);
-  let rewardsCounter = 0; // Fixed spelling error from 'zombiereWards' to 'rewardsCounter'
+  let rewardsCounter = 0;
 
   while (rewardsCounter < rewardsNumber) {
     let randomRow = Math.floor(Math.random() * matrix.length); // Generate a random row
@@ -106,18 +95,16 @@ function createRandomRewards(matrix) {
     while (
       (randomRow === 0 && randomCol === 0) || // Avoid [0][0]
       (randomRow === matrix.length - 1 && randomCol === matrix[0].length - 1) ||
-      matrix[randomRow][randomCol] === 2 ||
-      matrix[randomRow][randomCol] === 3
+      matrix[randomRow][randomCol] === 2 || // Avoid zombies
+      matrix[randomRow][randomCol] === 3 // Avoid rewards
     ) {
       randomRow = Math.floor(Math.random() * matrix.length); // New random row
       randomCol = Math.floor(Math.random() * matrix[0].length); // New random column
     }
 
     matrix[randomRow][randomCol] = 3; // Assign the reward
-    rewardsCounter++; //
+    rewardsCounter++;
   }
-
-  //return matrix; // Return the updated matrix
 }
 
 function showTable(matrix) {
@@ -130,95 +117,93 @@ function showTable(matrix) {
 }
 
 function move(direction) {
-  // Posición actual del jugador
+  // Current player position
   let [currentRow, currentCol] = playerPosition;
 
-  // Verificar si la dirección proporcionada es válida
+  // Check if the provided direction is valid
   if (directions[direction] === undefined) {
-    console.log("Dirección inválida. Usa 'North', 'South', 'East' o 'West'.");
-    alert("Dirección inválida. Usa 'North', 'South', 'East' o 'West'.");
+    console.log("Invalid direction. Use 'north', 'south', 'east' or 'west'.");
+    alert("Invalid direction. Use 'north', 'south', 'east' or 'west'.");
   } else {
-    // Calcular la nueva posición en base a la dirección dada
+    // Calculate the new position based on the given direction
     let [rowChange, colChange] = directions[direction];
     let newRow = currentRow + rowChange;
     let newCol = currentCol + colChange;
 
-    // Verificar si la nueva posición está dentro de los límites
+    // Check if the new position is within bounds
     if (
       newRow >= 0 &&
       newRow < dimension &&
       newCol >= 0 &&
       newCol < dimension
     ) {
-      // Verificar si ya se visitó esa casilla
+      // Check if that cell has already been visited
       if (!visited.has(`${newRow},${newCol}`)) {
-        // Actualizar la posición del jugador
+        // Update the player's position
         playerPosition = [newRow, newCol];
         visited.add(`${newRow},${newCol}`);
 
-        console.log(`Te has movido a la posición [${newRow}, ${newCol}]`);
-        alert(`Te has movido a la posición [${newRow}, ${newCol}]`);
+        console.log(`You moved to position [${newRow}, ${newCol}]`);
+        alert(`You moved to position [${newRow}, ${newCol}]`);
 
         if (matrix[newRow][newCol] === 2) {
-          // Si hay un zombi
-          console.log(
-            "¡Encontraste un zombi! Tus monedas se reducen a la mitad."
-          );
-          movimentos = 0;
+          // If there is a zombie
+          console.log("You found a zombie! Your coins are halved.");
+          moves = 0;
           coins = Math.floor(coins / 2);
           console.log(coins);
         } else if (matrix[newRow][newCol] === 3) {
-          // Si hay una recompensa
-          console.log("¡Encontraste una recompensa! Tus monedas se duplican.");
-          movimentos++;
-          coins += movimentos;
+          // If there is a reward
+          console.log("You found a reward! Your coins are doubled.");
+          moves++;
+          coins += moves;
           coins *= 5;
-          movimentos = 0;
+          moves = 0;
           console.log(coins);
         } else {
-          // Si es un espacio vacío
-          console.log("Movimiento seguro.");
-          movimentos++;
-          coins += movimentos;
+          // If it's an empty space
+          console.log("Safe move.");
+          moves++;
+          coins += moves;
           console.log(coins, " coins");
-          console.log(movimentos, " movimientos");
+          console.log(moves, " moves");
         }
-        matrix[currentRow][currentCol] = 1; // Marcamos la nueva posición en la matriz
-        matrix[newRow][newCol] = 1; // Marcamos la nueva posición en la matriz
-        // Verificar si el jugador ha ganado
+        matrix[currentRow][currentCol] = 1; // Mark the current position in the matrix
+        matrix[newRow][newCol] = 1; // Mark the new position in the matrix
+        // Check if the player has won
         if (
           playerPosition[0] === dimension - 1 &&
           playerPosition[1] === dimension - 1
         ) {
-          console.log("¡Has ganado!");
-          console.log("¡Felicidades, llegaste al final del juego!");
-          alert("¡Has ganado!");
+          console.log("You've won!");
+          console.log("Congratulations, you reached the end of the game!");
+          alert("You've won!");
           alert(coins, "coins");
         }
       } else {
-        console.log("¡Ya visitaste esta casilla!");
-        alert("¡Ya visitaste esta casilla!");
+        console.log("You've already visited this cell!");
+        alert("You've already visited this cell!");
       }
     } else {
-      console.log("No puedes moverte fuera del límite.");
-      alert("No puedes moverte fuera del límite.");
+      console.log("You can't move outside the limit.");
+      alert("You can't move outside the limit.");
     }
   }
 }
 
-function movimientoPosible() {
-  // Posición actual del jugador
+function possibleMoves() {
+  // Current player position
   let [currentRow, currentCol] = playerPosition;
-  let movimientoPosible = false;
+  let possibleMove = false;
 
-  // Mostrar posiciones válidas
-  console.log("Posiciones válidas a las que te puedes mover:");
+  // Display valid positions to move
+  console.log("Valid positions you can move to:");
   for (dir in directions) {
     let [rowChange, colChange] = directions[dir];
     let newRow = currentRow + rowChange;
     let newCol = currentCol + colChange;
 
-    // Verificar si la nueva posición está dentro de los límites y no visitada
+    // Check if the new position is within bounds and not visited
     if (
       newRow >= 0 &&
       newRow < dimension &&
@@ -226,39 +211,37 @@ function movimientoPosible() {
       newCol < dimension &&
       !visited.has(`${newRow},${newCol}`)
     ) {
-      /* console.log(`Puedes moverte hacia ${dir} a la posición [${newRow}, ${newCol}]`);
-      alert(`Puedes moverte hacia ${dir} a la posición [${newRow}, ${newCol}]`); */
-      pocitionValida.push(dir);
-      movimientoPosible = true;
+      validPositions.push(dir);
+      possibleMove = true;
     }
   }
 
-  // Si no se encontró ningún movimiento posible
-  if (!movimientoPosible) {
-    console.log("¡Final del juego! Te has quedado encerrado.");
-    alert("¡Final del juego! Te has quedado encerrado.");
+  // If no possible moves found
+  if (!possibleMove) {
+    console.log("Game over! You are trapped.");
+    alert("Game over! You are trapped.");
   }
 
-  return movimientoPosible;
+  return possibleMove;
 }
 
-// Bucle principal del juego
+// Main game loop
 while (
   playerPosition[0] !== dimension - 1 ||
   playerPosition[1] !== dimension - 1
 ) {
-  if (!movimientoPosible()) {
-    break; // Si no hay más movimientos posibles, salir del bucle
+  if (!possibleMoves()) {
+    break; // If no more possible moves, exit the loop
   }
 
-  let promptWherToMove = prompt(
-    `¿pudes mover a estes diraciones? ${pocitionValida}`
+  let promptWhereToMove = prompt(
+    `You can move to these directions: ${validPositions}`
   );
-  if (promptWherToMove === null) {
+  if (promptWhereToMove === null) {
     break;
   }
-  pocitionValida = [];
+  validPositions = [];
 
-  move(promptWherToMove.toLowerCase()); // Ejecutar movimiento
-  showTable(matrix); // Mostrar estado actual del tablero
+  move(promptWhereToMove.toLowerCase()); // Execute the move
+  showTable(matrix); // Show current board state
 }
