@@ -163,8 +163,8 @@ function move(direction) {
           console.log("You found a reward! Your coins are doubled.");
           alert("You found a reward! Your coins are doubled.");
           moves++;
-          moves = 0;
           coins += moves;
+          moves = 0;
           coins *= 5;
           console.log(coins);
           alert(`You have ${coins}€ coins`);
@@ -225,7 +225,7 @@ function possibleMoves() {
       possibleMove = true;
       console.log(dir);
 
-      console.log(matrix[newRow][newCol] == 2 ? "zombi" : "empty");
+      //console.log(matrix[newRow][newCol] == 2 ? "zombi" : "empty");
       if (matrix[newRow][newCol] === 2) {
         haveZombi++;
 
@@ -239,13 +239,14 @@ function possibleMoves() {
 
     zombieAround =
       haveZombi > 0
-        ? "You have zombies around"
+        ? `You have a ${haveZombi} zombies around`
         : "You don't have zombies around"; // Check if there are zombies around
 
     rewardsAround =
       haveReward > 0
-        ? "You have a reward around"
+        ? `You have a ${haveReward} reward around `
         : "You don't have a reward around"; // Check if there is a reward around
+
   }
   haveZombi = 0; // Rest  the zombi counter
   haveReward = 0; //  Reset counters
